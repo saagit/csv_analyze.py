@@ -67,7 +67,7 @@ def parse_args():
     parser.add_argument('-V', '--version',
                         help='output version information and exit',
                         action='version', version='%(prog)s v' + VERSION)
-    parser.add_argument('-d', '--dialect', default='excel',
+    parser.add_argument('-d', '--dialect', default=None,
                         help='Python csv module dialect to use')
     parser.add_argument('--list-dialects', action='store_true',
                         help='List Python csv module dialects')
@@ -134,7 +134,11 @@ def main():
                       file=sys.stderr)
                 rtn += 1
             else:
-                reader = csv.DictReader(csvfile, dialect=args.dialect)
+                dialect =  args.dialect
+                if not dialect:
+                    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+                    csvfile.seek(0)
+                reader = csv.DictReader(csvfile, dialect=dialect)
                 for row in reader:
                     if args.columns:
                         print('\t'.join([row[key] for key in args.columns]))
