@@ -139,6 +139,8 @@ def main():
                     dialect = csv.Sniffer().sniff(csvfile.read(1024))
                     csvfile.seek(0)
                 reader = csv.DictReader(csvfile, dialect=dialect)
+                if args.columns:
+                    print('\t'.join([key for key in args.columns]))
                 for row in reader:
                     if args.columns:
                         print('\t'.join([row[key] for key in args.columns]))
