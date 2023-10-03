@@ -32,12 +32,10 @@ import csv
 import os
 import sys
 
-import __main__
-
 VERSION='0.2'
 
 def progname():
-    return os.path.basename(__main__.__file__)
+    return os.path.basename(__file__)
 
 @contextlib.contextmanager
 def open_ro_with_error(filename):
